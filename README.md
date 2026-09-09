@@ -31,3 +31,13 @@ TELEGRAM_BOT_TOKEN=... \
 WEBSITES_TELEGRAM_CHANNEL_ID=-1001234567890 \
 python3 -m workflows.runner amirpourmand-ir
 ```
+
+## TickTick Today alerts
+
+`.github/workflows/ticktick-today-alerts.yml` checks TickTick hourly through the official CLI and sends a Telegram alert when the Today-style task list changes. It uses the broad open-task query and filters tasks locally by their start or due date, including overdue tasks.
+
+Add these repository secrets:
+
+- `TICKTICK_ACCESS_TOKEN`: TickTick API access token
+- `TELEGRAM_BOT_TOKEN`: the shared Telegram bot token
+- `TODAY_ALERTS_TELEGRAM_CHANNEL_ID`: numeric ID of the channel for Today alerts

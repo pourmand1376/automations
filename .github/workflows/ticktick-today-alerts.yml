@@ -1,0 +1,42 @@
+name: Send TickTick Today alerts
+
+on:
+  schedule:
+    - cron: "47 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ticktick-today-alerts
+  cancel-in-progress: false
+
+jobs:
+  send-today-alert:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Tehran
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install TickTick CLI
+        run: npm install --global @ticktick/ticktick-cli
+      - name: Send Today alert
+        env:
+          TICKTICK_ACCESS_TOKEN: ${{ secrets.TICKTICK_ACCESS_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TODAY_ALERTS_TELEGRAM_CHANNEL_ID: ${{ secrets.TODAY_ALERTS_TELEGRAM_CHANNEL_ID }}
+        run: python -m workflows.ticktick_today_to_telegram
+      - name: Commit updated alert state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state/ticktick_today_alerts.json
+          git diff --cached --quiet || git commit -m "chore: update TickTick Today alert state"
+          git push

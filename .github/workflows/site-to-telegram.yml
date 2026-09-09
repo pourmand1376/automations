@@ -23,6 +23,7 @@ jobs:
       - name: Run workflow
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
         run: python -m workflows.runner site-to-telegram
       - name: Commit updated workflow state
         run: |

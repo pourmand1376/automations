@@ -2,6 +2,8 @@
 
 Scheduled Python jobs run through GitHub Actions.
 
+Google Apps Script and other Google-related automation belongs in [`google-scripts/`](google-scripts/).
+
 ## Website to Telegram
 
 The workflows check both websites every hour and publish new posts to their configured Telegram channels:

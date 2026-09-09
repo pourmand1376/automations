@@ -12,6 +12,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
+from html.parser import HTMLParser
 from pathlib import Path
 
 TELEGRAM_MESSAGE_LIMIT = 4096
@@ -72,18 +73,59 @@ def parse_feed(payload: bytes) -> list[dict[str, str]]:
     return posts
 
 
-def _plain_text(value: str) -> str:
-    value = html.unescape(value)
-    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", value)).strip()
+class _DescriptionParser(HTMLParser):
+    """Convert feed HTML into Telegram HTML while preserving its structure."""
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.parts: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        tag = tag.lower()
+        if tag in {"h1", "h2", "h3", "h4", "h5", "h6"}:
+            self.parts.append("\n\n<b>")
+        elif tag == "p":
+            self.parts.append("\n\n")
+        elif tag == "br":
+            self.parts.append("\n")
+        elif tag == "a":
+            href = dict(attrs).get("href")
+            if href:
+                self.parts.append(f'<a href="{html.escape(href, quote=True)}">')
+
+    def handle_endtag(self, tag: str) -> None:
+        tag = tag.lower()
+        if tag in {"h1", "h2", "h3", "h4", "h5", "h6"}:
+            self.parts.append("</b>\n")
+        elif tag == "p":
+            self.parts.append("\n")
+        elif tag == "a":
+            self.parts.append("</a>")
+
+    def handle_data(self, data: str) -> None:
+        self.parts.append(html.escape(re.sub(r"[ \t\f\v]+", " ", data)))
+
+    def result(self) -> str:
+        value = "".join(self.parts)
+        value = re.sub(r" *\n *", "\n", value)
+        value = re.sub(r"\n{3,}", "\n\n", value)
+        return value.strip()
+
+
+def _format_description(value: str) -> str:
+    parser = _DescriptionParser()
+    parser.feed(value)
+    parser.close()
+    return parser.result()
 
 
 def format_message(post: dict[str, str]) -> str:
     message = f'<b>{html.escape(post["title"])}</b>\n{html.escape(post["link"])}'
-    summary = _plain_text(post.get("summary", ""))
+    summary = _format_description(post.get("summary", ""))
     if summary:
         remaining = TELEGRAM_MESSAGE_LIMIT - len(message) - 5
         if remaining > 20:
-            message += "\n\n" + html.escape(summary[:remaining].rstrip())
+            message += "\n\n" + summary[:remaining].rstrip()
     return message[:TELEGRAM_MESSAGE_LIMIT]
 
 

@@ -19,6 +19,12 @@ class FeedTests(unittest.TestCase):
         self.assertNotIn("Read the post", message)
         self.assertNotIn("<b>hello</b>", message)
 
+    def test_preserves_description_spacing_and_headings(self):
+        description = "<h3 id=\"graph\">گراف درس‌های متمم</h3> <p>پاراگراف اول.</p> <p><a href=\"https://example.com/graph\">گراف متمم</a></p>"
+        message = format_message({"title": "متمم", "link": "https://example.com/post", "summary": description})
+        self.assertIn("<b>گراف درس‌های متمم</b>", message)
+        self.assertIn("پاراگراف اول.\n\n<a href=\"https://example.com/graph\">گراف متمم</a>", message)
+
 
 if __name__ == "__main__":
     unittest.main()

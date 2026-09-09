@@ -31,7 +31,7 @@ jobs:
         env:
           TICKTICK_ACCESS_TOKEN: ${{ secrets.TICKTICK_ACCESS_TOKEN }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          PERSONAN_CHAT_ID_TELEGRAM: ${{ secrets.PERSONAN_CHAT_ID_TELEGRAM }}
+          PERSONAL_CHAT_ID_TELEGRAM: ${{ secrets.PERSONAL_CHAT_ID_TELEGRAM }}
         run: python -m workflows.ticktick_today_to_telegram
       - name: Commit updated alert state
         run: |

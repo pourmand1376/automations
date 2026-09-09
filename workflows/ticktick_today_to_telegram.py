@@ -60,9 +60,9 @@ def _message(tasks: list[dict]) -> str:
 def run() -> None:
     token = os.getenv("TICKTICK_ACCESS_TOKEN")
     telegram_token = os.getenv("TELEGRAM_BOT_TOKEN")
-    channel = os.getenv("PERSONAN_CHAT_ID_TELEGRAM")
+    channel = os.getenv("PERSONAL_CHAT_ID_TELEGRAM")
     if not token or not telegram_token or not channel:
-        raise RuntimeError("TICKTICK_ACCESS_TOKEN, TELEGRAM_BOT_TOKEN, and PERSONAN_CHAT_ID_TELEGRAM must be set")
+        raise RuntimeError("TICKTICK_ACCESS_TOKEN, TELEGRAM_BOT_TOKEN, and PERSONAL_CHAT_ID_TELEGRAM must be set")
 
     state_path = Path(os.getenv("TICKTICK_TODAY_STATE_FILE", TODAY_STATE_FILE))
     tasks = get_today_tasks(token)

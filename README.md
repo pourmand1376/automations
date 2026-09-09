@@ -34,7 +34,7 @@ WEBSITES_TELEGRAM_CHANNEL_ID=-1001234567890 \
 python3 -m workflows.runner amirpourmand-ir
 ```
 
-The Castbox workflow reads `http://rss.castbox.fm/everest/480c97a079254a06ba396783a44f0acc.xml`, publishes new episodes, and stores deduplication state in `state/castbox_to_telegram.json`.
+The Castbox workflow reads `http://rss.castbox.fm/everest/480c97a079254a06ba396783a44f0acc.xml`, publishes new episodes, and stores deduplication state in `state/castbox_to_telegram.json`. It downloads each RSS audio enclosure and uploads MP3/M4A files as Telegram audio; other audio formats are uploaded as documents.
 
 ## TickTick Today alerts
 

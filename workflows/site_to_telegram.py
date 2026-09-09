@@ -92,6 +92,7 @@ def parse_feed(payload: bytes) -> list[dict[str, str]]:
     for entry in entries:
         link = _link(entry)
         audio_url, audio_type = _audio(entry)
+        link = link or audio_url
         post_id = _child_text(entry, "guid", "id") or link
         title = _child_text(entry, "title") or "Untitled post"
         summary = _child_text(entry, "description", "summary", "content")
@@ -255,7 +256,9 @@ def run(site: str) -> None:
     state = _read_state(state_path)
     known = set(state.get("posted_ids", []))
 
-    if not state.get("initialized", False):
+    # An empty initialized state can be left by an older parser that did not
+    # understand this feed. Rebuild it as a baseline without reposting the archive.
+    if not state.get("initialized", False) or not state.get("posted_ids"):
         log.info("Initializing state with %d existing feed entries", len(posts))
         _write_state(state_path, {
             "initialized": True,

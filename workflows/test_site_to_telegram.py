@@ -5,9 +5,10 @@ from workflows.site_to_telegram import format_message, parse_feed
 
 class FeedTests(unittest.TestCase):
     def test_parses_rss(self):
-        payload = b'<rss><channel><item><title>Hello</title><link>https://example.com/hello</link><guid>1</guid><description><![CDATA[<p>Text</p>]]></description><enclosure url="https://cdn.example.com/hello.mp3" type="audio/mpeg"/></item></channel></rss>'
+        payload = b'<rss><channel><item><title>Hello</title><guid>1</guid><description><![CDATA[<p>Text</p>]]></description><enclosure url="https://cdn.example.com/hello.mp3" type="audio/mpeg"/></item></channel></rss>'
         post = parse_feed(payload)[0]
         self.assertEqual(post["id"], "1")
+        self.assertEqual(post["link"], "https://cdn.example.com/hello.mp3")
         self.assertEqual(post["audio_url"], "https://cdn.example.com/hello.mp3")
         self.assertEqual(post["audio_type"], "audio/mpeg")
 

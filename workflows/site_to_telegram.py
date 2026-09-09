@@ -16,7 +16,7 @@ from pathlib import Path
 
 DEFAULT_FEED_URL = "https://amirpourmand.ir/index.xml"
 DEFAULT_CHANNEL_ID = "@pourmand_amir"
-DEFAULT_STATE_FILE = "state/telegram-site-posts.json"
+DEFAULT_STATE_FILE = "state/amirpourmand_ir_to_telegram.json"
 TELEGRAM_MESSAGE_LIMIT = 4096
 log = logging.getLogger(__name__)
 

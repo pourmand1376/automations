@@ -164,6 +164,21 @@ def format_message(post: dict[str, str]) -> str:
     return message[:TELEGRAM_MESSAGE_LIMIT]
 
 
+def format_media_caption(post: dict[str, str]) -> str:
+    """Build an audio caption without exposing the Castbox enclosure URL."""
+    title = f'<b>{html.escape(post["title"])}</b>'
+    description = _format_description(post.get("summary", ""))
+    if not description:
+        return title
+
+    remaining = 1024 - len(title) - 2
+    if len(description) > remaining:
+        # Captions must stay valid Telegram HTML when long descriptions are cut.
+        plain = html.unescape(re.sub(r"<[^>]+>", " ", description))
+        description = html.escape(re.sub(r"\s+", " ", plain).strip()[:remaining - 1] + "…")
+    return f"{title}\n\n{description}"
+
+
 def _fetch(url: str) -> bytes:
     request = urllib.request.Request(url, headers={"User-Agent": "automations/1.0"})
     with urllib.request.urlopen(request, timeout=30) as response:
@@ -202,7 +217,7 @@ def _send_telegram_media(token: str, channel: str, post: dict[str, str]) -> None
     audio_type = post.get("audio_type") or content_type
     method = "sendAudio" if audio_type in {"audio/mpeg", "audio/mp3", "audio/mp4", "audio/x-m4a"} or filename.lower().endswith((".mp3", ".m4a")) else "sendDocument"
     field = "audio" if method == "sendAudio" else "document"
-    caption = f'<b>{html.escape(post["title"])}</b>\n{html.escape(post["link"])}'
+    caption = format_media_caption(post)
     boundary = f"----automations-{uuid4().hex}"
     chunks = [
         f"--{boundary}\r\nContent-Disposition: form-data; name=\"chat_id\"\r\n\r\n{channel}\r\n".encode(),

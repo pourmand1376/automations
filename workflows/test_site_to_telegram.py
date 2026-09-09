@@ -1,6 +1,6 @@
 import unittest
 
-from workflows.site_to_telegram import format_message, parse_feed
+from workflows.site_to_telegram import format_media_caption, format_message, parse_feed
 
 
 class FeedTests(unittest.TestCase):
@@ -29,6 +29,15 @@ class FeedTests(unittest.TestCase):
         message = format_message({"title": "متمم", "link": "https://example.com/post", "summary": description})
         self.assertIn("<b>گراف درس‌های متمم</b>", message)
         self.assertIn("پاراگراف اول.\n\n<a href=\"https://example.com/graph\">گراف متمم</a>", message)
+
+    def test_media_caption_omits_enclosure_url(self):
+        caption = format_media_caption({
+            "title": "E02",
+            "link": "https://cdn.example.com/episode.mp3",
+            "summary": "<p>شرح قسمت.</p>",
+        })
+        self.assertEqual(caption, "<b>E02</b>\n\nشرح قسمت.")
+        self.assertNotIn("episode.mp3", caption)
 
 
 if __name__ == "__main__":

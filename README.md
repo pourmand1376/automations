@@ -40,4 +40,4 @@ Add these repository secrets:
 
 - `TICKTICK_ACCESS_TOKEN`: TickTick API access token
 - `TELEGRAM_BOT_TOKEN`: the shared Telegram bot token
-- `TODAY_ALERTS_TELEGRAM_CHANNEL_ID`: numeric ID of the channel for Today alerts
+- `PERSONAN_CHAT_ID_TELEGRAM`: numeric ID of the Telegram chat for Today alerts

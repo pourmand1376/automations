@@ -21,14 +21,14 @@ SITE_CONFIG = {
     "amirpourmand-ir": {
         "feed_url": "https://amirpourmand.ir/index.xml",
         "state_file": "state/amirpourmand_ir_to_telegram.json",
-        "token_env": "AMIRPOURMAND_IR_TELEGRAM_BOT_TOKEN",
-        "channel_env": "AMIRPOURMAND_IR_TELEGRAM_CHANNEL_ID",
+        "token_env": "TELEGRAM_BOT_TOKEN",
+        "channel_env": "WEBSITES_TELEGRAM_CHANNEL_ID",
     },
     "aprd-ir": {
         "feed_url": "https://aprd.ir/index.xml",
         "state_file": "state/aprd_ir_to_telegram.json",
-        "token_env": "APRD_IR_TELEGRAM_BOT_TOKEN",
-        "channel_env": "APRD_IR_TELEGRAM_CHANNEL_ID",
+        "token_env": "TELEGRAM_BOT_TOKEN",
+        "channel_env": "WEBSITES_TELEGRAM_CHANNEL_ID",
     },
 }
 

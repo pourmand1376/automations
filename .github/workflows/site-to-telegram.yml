@@ -22,8 +22,8 @@ jobs:
           python-version: "3.12"
       - name: Publish amirpourmand.ir posts
         env:
-          AMIRPOURMAND_IR_TELEGRAM_BOT_TOKEN: ${{ secrets.AMIRPOURMAND_IR_TELEGRAM_BOT_TOKEN }}
-          AMIRPOURMAND_IR_TELEGRAM_CHANNEL_ID: ${{ secrets.AMIRPOURMAND_IR_TELEGRAM_CHANNEL_ID }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          WEBSITES_TELEGRAM_CHANNEL_ID: ${{ secrets.WEBSITES_TELEGRAM_CHANNEL_ID }}
         run: python -m workflows.runner amirpourmand-ir
       - name: Commit updated workflow state
         run: |

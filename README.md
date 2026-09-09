@@ -33,18 +33,9 @@ WEBSITES_TELEGRAM_CHANNEL_ID=-1001234567890 \
 python3 -m workflows.runner amirpourmand-ir
 ```
 
-Castbox is intentionally not run by GitHub Actions. Run it on your server with Telegram’s local Bot API server so large episodes can be uploaded. From the repository directory, configure `TELEGRAM_BOT_TOKEN`, `CASTBOX_TELEGRAM_CHANNEL_ID`, and `TELEGRAM_API_BASE_URL`, then run:
+Castbox is checked hourly by `.github/workflows/castbox-to-telegram.yml`. It reads `http://rss.castbox.fm/everest/480c97a079254a06ba396783a44f0acc.xml`, publishes new episodes, and stores deduplication state in `state/castbox_to_telegram.json`. It downloads each RSS audio enclosure and uploads MP3/M4A files as Telegram audio; other audio formats are uploaded as documents.
 
-```bash
-TELEGRAM_BOT_TOKEN=... \
-CASTBOX_TELEGRAM_CHANNEL_ID=-1001234567890 \
-TELEGRAM_API_BASE_URL=http://127.0.0.1:8081 \
-python3 -m workflows.runner castbox
-```
-
-Schedule that command with cron or a systemd timer. It reads `http://rss.castbox.fm/everest/480c97a079254a06ba396783a44f0acc.xml`, publishes new episodes, and stores deduplication state in `state/castbox_to_telegram.json`. It downloads each RSS audio enclosure and uploads MP3/M4A files as Telegram audio; other audio formats are uploaded as documents.
-
-The website workflows and TickTick workflow continue to run on GitHub Actions. They use Telegram’s hosted API by default.
+The website, TickTick, and Castbox workflows use Telegram’s hosted API by default. The code also supports a custom `TELEGRAM_API_BASE_URL` for a future local Bot API setup.
 
 ## TickTick Today alerts
 

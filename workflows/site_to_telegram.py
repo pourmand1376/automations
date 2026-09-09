@@ -41,6 +41,11 @@ SITE_CONFIG = {
 }
 
 
+def _telegram_endpoint(token: str, method: str) -> str:
+    base_url = os.getenv("TELEGRAM_API_BASE_URL", "https://api.telegram.org").rstrip("/")
+    return f"{base_url}/bot{token}/{method}"
+
+
 def _local_name(tag: str) -> str:
     return tag.rsplit("}", 1)[-1].lower()
 
@@ -165,7 +170,7 @@ def _fetch(url: str) -> bytes:
 
 
 def _send_telegram(token: str, channel: str, message: str) -> None:
-    endpoint = f"https://api.telegram.org/bot{token}/sendMessage"
+    endpoint = _telegram_endpoint(token, "sendMessage")
     body = urllib.parse.urlencode({
         "chat_id": channel,
         "text": message,
@@ -207,7 +212,7 @@ def _send_telegram_media(token: str, channel: str, post: dict[str, str]) -> None
         f"\r\n--{boundary}--\r\n".encode(),
     ]
     request = urllib.request.Request(
-        f"https://api.telegram.org/bot{token}/{method}",
+        _telegram_endpoint(token, method),
         data=b"".join(chunks),
         headers={"Content-Type": f"multipart/form-data; boundary={boundary}"},
         method="POST",

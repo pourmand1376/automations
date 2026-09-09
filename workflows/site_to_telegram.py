@@ -14,10 +14,23 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-DEFAULT_FEED_URL = "https://amirpourmand.ir/index.xml"
-DEFAULT_STATE_FILE = "state/amirpourmand_ir_to_telegram.json"
 TELEGRAM_MESSAGE_LIMIT = 4096
 log = logging.getLogger(__name__)
+
+SITE_CONFIG = {
+    "amirpourmand-ir": {
+        "feed_url": "https://amirpourmand.ir/index.xml",
+        "state_file": "state/amirpourmand_ir_to_telegram.json",
+        "token_env": "AMIRPOURMAND_IR_TELEGRAM_BOT_TOKEN",
+        "channel_env": "AMIRPOURMAND_IR_TELEGRAM_CHANNEL_ID",
+    },
+    "aprd-ir": {
+        "feed_url": "https://aprd.ir/index.xml",
+        "state_file": "state/aprd_ir_to_telegram.json",
+        "token_env": "APRD_IR_TELEGRAM_BOT_TOKEN",
+        "channel_env": "APRD_IR_TELEGRAM_CHANNEL_ID",
+    },
+}
 
 
 def _local_name(tag: str) -> str:
@@ -111,14 +124,17 @@ def _write_state(path: Path, state: dict) -> None:
     temporary.replace(path)
 
 
-def run() -> None:
-    token = os.getenv("TELEGRAM_BOT_TOKEN")
-    channel = os.getenv("TELEGRAM_CHANNEL_ID")
+def run(site: str) -> None:
+    if site not in SITE_CONFIG:
+        raise RuntimeError(f"Unknown site: {site}")
+    config = SITE_CONFIG[site]
+    token = os.getenv(config["token_env"])
+    channel = os.getenv(config["channel_env"])
     if not token or not channel:
-        raise RuntimeError("TELEGRAM_BOT_TOKEN and TELEGRAM_CHANNEL_ID must be set")
+        raise RuntimeError(f'{config["token_env"]} and {config["channel_env"]} must be set')
 
-    feed_url = os.getenv("FEED_URL", DEFAULT_FEED_URL)
-    state_path = Path(os.getenv("STATE_FILE", DEFAULT_STATE_FILE))
+    feed_url = config["feed_url"]
+    state_path = Path(config["state_file"])
     posts = parse_feed(_fetch(feed_url))
     state = _read_state(state_path)
     known = set(state.get("posted_ids", []))
@@ -152,7 +168,7 @@ def run() -> None:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     try:
-        run()
+        run("amirpourmand-ir")
     except (ET.ParseError, OSError, RuntimeError, urllib.error.URLError) as error:
         log.error("Workflow failed: %s", error)
         sys.exit(1)

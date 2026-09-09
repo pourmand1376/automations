@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 DEFAULT_FEED_URL = "https://amirpourmand.ir/index.xml"
+DEFAULT_CHANNEL_ID = "@pourmand_amir"
 DEFAULT_STATE_FILE = "state/telegram-site-posts.json"
 TELEGRAM_MESSAGE_LIMIT = 4096
 log = logging.getLogger(__name__)
@@ -116,9 +117,9 @@ def _write_state(path: Path, state: dict) -> None:
 
 def run() -> None:
     token = os.getenv("TELEGRAM_BOT_TOKEN")
-    channel = os.getenv("TELEGRAM_CHANNEL_ID")
-    if not token or not channel:
-        raise RuntimeError("TELEGRAM_BOT_TOKEN and TELEGRAM_CHANNEL_ID must be set")
+    channel = os.getenv("TELEGRAM_CHANNEL_ID", DEFAULT_CHANNEL_ID)
+    if not token:
+        raise RuntimeError("TELEGRAM_BOT_TOKEN must be set")
 
     feed_url = os.getenv("FEED_URL", DEFAULT_FEED_URL)
     state_path = Path(os.getenv("STATE_FILE", DEFAULT_STATE_FILE))

@@ -13,6 +13,14 @@ Create these repository secrets:
 
 The bot must be an administrator of the target channel. The first run records existing feed entries; later runs publish new entries and commit their IDs to `state/amirpourmand_ir_to_telegram.json`.
 
+To find a channel ID, add the bot to the channel, publish a test message, then open:
+
+```text
+https://api.telegram.org/bot<BOT_TOKEN>/getUpdates
+```
+
+Look for `channel_post.chat.id` in the response.
+
 Run locally with:
 
 ```bash

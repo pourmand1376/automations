@@ -9,7 +9,7 @@ from workflows.site_to_telegram import run
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run a scheduled workflow job")
-    parser.add_argument("job", choices=("amirpourmand-ir", "aprd-ir"))
+    parser.add_argument("job", choices=("amirpourmand-ir", "aprd-ir", "castbox"))
     args = parser.parse_args()
     run(args.job)
 

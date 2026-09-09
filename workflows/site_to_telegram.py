@@ -31,6 +31,12 @@ SITE_CONFIG = {
         "token_env": "TELEGRAM_BOT_TOKEN",
         "channel_env": "WEBSITES_TELEGRAM_CHANNEL_ID",
     },
+    "castbox": {
+        "feed_url": "http://rss.castbox.fm/everest/480c97a079254a06ba396783a44f0acc.xml",
+        "state_file": "state/castbox_to_telegram.json",
+        "token_env": "TELEGRAM_BOT_TOKEN",
+        "channel_env": "CASTBOX_TELEGRAM_CHANNEL_ID",
+    },
 }
 
 

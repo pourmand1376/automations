@@ -8,11 +8,13 @@ The workflows check both websites every hour and publish new posts to their conf
 
 - `amirpourmand.ir`, checked at minute 17
 - `aprd.ir`, checked at minute 37
+- Castbox, checked at minute 57
 
 Create these repository secrets:
 
 - `TELEGRAM_BOT_TOKEN`: shared bot token for both websites
 - `WEBSITES_TELEGRAM_CHANNEL_ID`: shared numeric channel ID for both websites
+- `CASTBOX_TELEGRAM_CHANNEL_ID`: numeric ID of the Telegram channel for Castbox episodes
 
 The bot must be an administrator of the target channel. The first run records existing feed entries; later runs publish new entries and commit their IDs to `state/amirpourmand_ir_to_telegram.json`.
 
@@ -31,6 +33,8 @@ TELEGRAM_BOT_TOKEN=... \
 WEBSITES_TELEGRAM_CHANNEL_ID=-1001234567890 \
 python3 -m workflows.runner amirpourmand-ir
 ```
+
+The Castbox workflow reads `http://rss.castbox.fm/everest/480c97a079254a06ba396783a44f0acc.xml`, publishes new episodes, and stores deduplication state in `state/castbox_to_telegram.json`.
 
 ## TickTick Today alerts
 

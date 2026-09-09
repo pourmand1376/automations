@@ -15,6 +15,8 @@ class FeedTests(unittest.TestCase):
     def test_formats_safe_telegram_html(self):
         message = format_message({"title": "A & B", "link": "https://example.com/?a=1&b=2", "summary": "<b>hello</b>"})
         self.assertIn("A &amp; B", message)
+        self.assertIn("https://example.com/?a=1&amp;b=2", message)
+        self.assertNotIn("Read the post", message)
         self.assertNotIn("<b>hello</b>", message)
 
 

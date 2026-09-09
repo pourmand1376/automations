@@ -65,10 +65,7 @@ def _plain_text(value: str) -> str:
 
 
 def format_message(post: dict[str, str]) -> str:
-    message = (
-        f'<b>{html.escape(post["title"])}</b>\n'
-        f'<a href="{html.escape(post["link"], quote=True)}">Read the post</a>'
-    )
+    message = f'<b>{html.escape(post["title"])}</b>\n{html.escape(post["link"])}'
     summary = _plain_text(post.get("summary", ""))
     if summary:
         remaining = TELEGRAM_MESSAGE_LIMIT - len(message) - 5

@@ -179,6 +179,19 @@ def format_media_caption(post: dict[str, str]) -> str:
     return f"{title}\n\n{description}"
 
 
+def _media_filename(post: dict[str, str], audio_type: str) -> str:
+    """Use the episode title instead of Castbox's hash-based filename."""
+    title = re.sub(r"[\\/:*?\"<>|]+", "-", post["title"])
+    title = re.sub(r"\s+", " ", title).strip(" .")[:180] or "episode"
+    extension = {
+        "audio/mpeg": ".mp3",
+        "audio/mp3": ".mp3",
+        "audio/mp4": ".m4a",
+        "audio/x-m4a": ".m4a",
+    }.get(audio_type, ".audio")
+    return title if title.lower().endswith(extension) else title + extension
+
+
 def _fetch(url: str) -> bytes:
     request = urllib.request.Request(url, headers={"User-Agent": "automations/1.0"})
     with urllib.request.urlopen(request, timeout=30) as response:
@@ -212,9 +225,8 @@ def _send_telegram_media(token: str, channel: str, post: dict[str, str]) -> None
     if len(data) > 50 * 1024 * 1024:
         raise RuntimeError("Audio file is larger than Telegram's 50 MB bot upload limit")
 
-    parsed_url = urllib.parse.urlsplit(post["audio_url"])
-    filename = Path(urllib.parse.unquote(parsed_url.path)).name or "episode.audio"
     audio_type = post.get("audio_type") or content_type
+    filename = _media_filename(post, audio_type)
     method = "sendAudio" if audio_type in {"audio/mpeg", "audio/mp3", "audio/mp4", "audio/x-m4a"} or filename.lower().endswith((".mp3", ".m4a")) else "sendDocument"
     field = "audio" if method == "sendAudio" else "document"
     caption = format_media_caption(post)

@@ -1,6 +1,6 @@
 import unittest
 
-from workflows.site_to_telegram import format_media_caption, format_message, parse_feed
+from workflows.site_to_telegram import _media_filename, format_media_caption, format_message, parse_feed
 
 
 class FeedTests(unittest.TestCase):
@@ -38,6 +38,10 @@ class FeedTests(unittest.TestCase):
         })
         self.assertEqual(caption, "<b>E02</b>\n\nشرح قسمت.")
         self.assertNotIn("episode.mp3", caption)
+
+    def test_media_filename_uses_episode_title(self):
+        filename = _media_filename({"title": "E02 / یک قسمت خوب"}, "audio/mp3")
+        self.assertEqual(filename, "E02 - یک قسمت خوب.mp3")
 
 
 if __name__ == "__main__":

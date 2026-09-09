@@ -41,7 +41,7 @@ The website, TickTick, and Castbox workflows use Telegram’s hosted API by defa
 
 ## Raindrop Motamem URL list
 
-`.github/workflows/raindrop-motamem-sync.yml` searches Raindrop for `motamem.org` once daily, keeps only URLs beginning with `https://motamem.org/`, and commits them to [`data/motamem_urls.json`](data/motamem_urls.json). The file is a plain JSON array, so a Tampermonkey script can fetch it from the raw GitHub URL and cache it locally.
+`.github/workflows/raindrop-motamem-sync.yml` searches Raindrop for `motamem.org` once daily, keeps only URLs beginning with `https://motamem.org/`, and commits them to [`state/motamem_urls.json`](state/motamem_urls.json). The file is a plain JSON array, so a Tampermonkey script can fetch it from the raw GitHub URL and cache it locally.
 
 Add this repository secret:
 

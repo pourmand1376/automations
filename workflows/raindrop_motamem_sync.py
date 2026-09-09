@@ -14,7 +14,7 @@ from urllib.request import Request, urlopen
 RAINDROP_API_URL = "https://api.raindrop.io/rest/v1/raindrops/0"
 DEFAULT_PREFIX = "https://motamem.org/"
 DEFAULT_SEARCH = "motamem.org"
-DEFAULT_OUTPUT = Path("data/motamem_urls.json")
+DEFAULT_OUTPUT = Path("state/motamem_urls.json")
 PER_PAGE = 50
 
 

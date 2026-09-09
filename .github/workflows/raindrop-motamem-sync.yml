@@ -31,12 +31,12 @@ jobs:
 
       - name: Commit updated URL list
         run: |
-          if git diff --quiet -- data/motamem_urls.json; then
+          if git diff --quiet -- state/motamem_urls.json; then
             echo "No URL changes."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/motamem_urls.json
+          git add state/motamem_urls.json
           git commit -m "chore: sync Motamem Raindrop URLs"
           git push

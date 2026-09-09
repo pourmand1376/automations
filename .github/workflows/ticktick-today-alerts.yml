@@ -2,7 +2,8 @@ name: Send TickTick Today alerts
 
 on:
   schedule:
-    - cron: "47 * * * *"
+    - cron: "0 6 * * *"
+      timezone: "UTC"
   workflow_dispatch:
 
 permissions:

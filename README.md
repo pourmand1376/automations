@@ -34,7 +34,7 @@ python3 -m workflows.runner amirpourmand-ir
 
 ## TickTick Today alerts
 
-`.github/workflows/ticktick-today-alerts.yml` checks TickTick hourly through the official CLI and sends a Telegram alert when the Today-style task list changes. It uses the broad open-task query and filters tasks locally by their start or due date, including overdue tasks.
+`.github/workflows/ticktick-today-alerts.yml` checks TickTick daily at 06:00 UTC through the official CLI and sends a Telegram alert when the Today-style task list changes. It uses the broad open-task query and filters tasks locally by their start or due date, including overdue tasks.
 
 Add these repository secrets:
 

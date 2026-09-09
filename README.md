@@ -39,6 +39,16 @@ Castbox is checked hourly by `.github/workflows/castbox-to-telegram.yml`. It rea
 
 The website, TickTick, and Castbox workflows use Telegram’s hosted API by default. The code also supports a custom `TELEGRAM_API_BASE_URL` for a future local Bot API setup.
 
+## Raindrop Motamem URL list
+
+`.github/workflows/raindrop-motamem-sync.yml` searches Raindrop for `motamem.org` once daily, keeps only URLs beginning with `https://motamem.org/`, and commits them to [`data/motamem_urls.json`](data/motamem_urls.json). The file is a plain JSON array, so a Tampermonkey script can fetch it from the raw GitHub URL and cache it locally.
+
+Add this repository secret:
+
+- `RAINDROP_ACCESS_TOKEN`: a Raindrop API access token
+
+The workflow uses Raindrop’s all-collections endpoint (collection `0`) and does not modify bookmarks. Create or copy an access token from [Raindrop App Management](https://app.raindrop.io/settings/integrations).
+
 ## TickTick Today alerts
 
 `.github/workflows/ticktick-today-alerts.yml` checks TickTick daily at 06:00 UTC through the official CLI and sends a Telegram alert when the Today-style task list changes. It uses the broad open-task query and filters tasks locally by their start or due date, including overdue tasks.

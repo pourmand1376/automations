@@ -51,7 +51,7 @@ The workflow uses Raindrop’s all-collections endpoint (collection `0`) and doe
 
 ## TickTick Today alerts
 
-`.github/workflows/ticktick-today-alerts.yml` checks TickTick daily at 06:00 UTC through the official CLI and sends a Telegram alert when the Today-style task list changes. It uses the broad open-task query and filters tasks locally by their start or due date, including overdue tasks.
+`.github/workflows/ticktick-today-alerts.yml` checks TickTick daily at 06:00 Iran time (02:30 UTC) through the official CLI and sends a Telegram alert when the Today-style task list changes. It uses the broad open-task query and filters tasks locally by their start or due date, including overdue tasks.
 
 Add these repository secrets:
 

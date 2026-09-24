@@ -2,7 +2,7 @@
 
 Scheduled Python jobs run through GitHub Actions.
 
-Google Apps Script and other Google-related automation belongs in [`google-scripts/`](google-scripts/).
+Google Apps Script and other Google-related automation belongs in [`google-scripts/`](google-scripts/). Those scripts run on Google's own triggers rather than GitHub Actions, because they need an interactive OAuth consent from the Google account that owns the data. [`google-scripts/birthday-reminder/`](google-scripts/birthday-reminder/) is one: it sends a Telegram reminder 3 days before a Google Contacts birthday and on the day itself.
 
 ## Website to Telegram
 
